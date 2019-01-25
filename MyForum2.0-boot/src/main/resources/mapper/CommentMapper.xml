@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.ltq.dao.CommentMapper">
+	
+	<!-- 增 -->
+	
+	<insert id="addComment" parameterType="org.ltq.entity.Comment">
+		insert into comment(account,uname,time,content,image,post_id) values(#{account},#{uname},#{time},#{content},#{image},0)
+		<selectKey keyColumn="commentid" keyProperty="commentid" resultType="java.math.BigInteger" order="AFTER">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+	</insert>
+	
+	<insert id="addCommentByPID" parameterType="org.ltq.entity.Comment">
+		insert into comment(account,uname,time,content,image,post_id) values(#{account},#{uname},#{time},#{content},#{image},#{post_id})
+		<selectKey keyColumn="commentid" keyProperty="commentid" resultType="java.math.BigInteger" order="AFTER">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+	</insert>
+	
+	<!-- 删 -->
+		
+	<delete id="deleteCommentByCommentId" parameterType="java.math.BigInteger">
+		delete from comment where commentid = #{commentId}
+	</delete>
+		
+	<delete id="deleteCommentByCommentIdList" parameterType="java.math.BigInteger">
+		delete from comment where commentid in 
+		<foreach collection="list" index="index" item="item" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+	
+	
+	
+	<!-- 改 -->
+	
+	<!-- 查 -->
+
+	<select id="queryCommentCountByCommentId" parameterType="java.math.BigInteger" resultType="int">
+		select count(1) from comment where commentid = #{commentId}
+	</select>
+	
+	<select id="queryAllCommentsWithoutPID" resultMap="CommentMapping">
+		select commentid,account,uname,time,content,image from comment where post_id = 0 order by time desc
+	</select>
+	
+	<select id="queryAllCommentCount" resultType="int">
+		select count(*) from comment where post_id = 0
+	</select>
+	
+	<select id="queryCommentByPID" parameterType="int" resultMap="CommentMapping">
+		select commentid,account,uname,time,content,image from comment where post_id = #{post_id} order by time desc
+	</select>
+	
+	<select id="queryCommentCountByPID" parameterType="int" resultType="int">
+		select count(*) from comment where post_id = #{post_id}
+	</select>
+	
+	<select id="queryCIDByPID" parameterType="int" resultType="java.math.BigInteger">
+		select commentid from comment where post_id = #{post_id}
+	</select>
+	
+	<!-- resultMap -->
+	<resultMap type="org.ltq.entity.Comment" id="CommentMapping">
+		<id property="commentid" column="commentid"/>
+		<result property="account" column="account"/>
+		<result property="uname" column="uname"/>
+		<result property="time" column="time" javaType="java.lang.String" jdbcType="TIMESTAMP"/>
+		<result property="content" column="content"/>
+		<result property="image" column="image"/>
+		<result property="post_id" column="post_id"/>
+	</resultMap>
+</mapper>

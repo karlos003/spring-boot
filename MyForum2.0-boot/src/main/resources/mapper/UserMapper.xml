@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.ltq.dao.UserMapper">
+
+	<!-- 增 -->
+	
+	<insert id="addUser" parameterType="org.ltq.entity.User">
+		insert into user(user_account,user_pwd,user_name,user_photo) value(#{user_account},#{user_pwd},#{user_name},0)
+	</insert> 
+	
+	<insert id="addUserSubsPost" parameterType="org.ltq.entity.User">
+		insert into user_subspost(user_account,post_id,sub_time) value(#{user_account},#{post_id},#{sub_time})
+	</insert>
+	
+	<insert id="addUserSub" parameterType="org.ltq.entity.User">
+		insert into user_sub(user_account,sub_account,usub_time) value(#{user_account},#{sub_account},#{usub_time})
+	</insert>
+	
+	<!-- 删 -->
+	
+	<delete id="removeUserSubPost" parameterType="org.ltq.entity.User">
+		delete from user_subspost where user_account = #{user_account} and post_id = #{post_id}
+	</delete>
+	
+	<delete id="removeUserSub" parameterType="org.ltq.entity.User">
+		delete from user_sub where user_account = #{user_account} and sub_account = #{sub_account}
+	</delete>
+	
+	<!-- 改 -->
+	
+	<update id="updateUserPhotoByAccount" parameterType="org.ltq.entity.User">
+		update user set user_photo = #{user_photo} where user_account = #{user_account}
+	</update>
+	
+	<update id="updateUserPwdByAccount" parameterType="org.ltq.entity.User">
+		update user set user_pwd = #{user_pwd} where user_account = #{user_account}
+	</update>
+	
+	<!-- 查 -->
+	
+	<select id="queryUserInfoByAccount" parameterType="String" resultMap="userMapping">
+		select user_account,user_name,user_photo from user where user_account = #{user_account}
+	</select>
+	
+	<select id="queryUserInfoByAccList" parameterType="java.util.List" resultMap="userMapping">
+		select user_account,user_name,user_photo from user where user_account in 
+		<foreach collection="list" index="index" item="user_account" open="(" separator="," close=")">
+			#{user_account}
+		</foreach>
+	</select>
+	
+	<select id="queryUserByAccount" parameterType="String" resultMap="userMapping">
+		select * from user where user_account = #{user_account}
+	</select>
+	
+	<select id="queryUserCountByAccount" parameterType="String" resultType="int">
+		select count(*) from user where user_account = #{user_account}
+	</select>
+	
+	<select id="queryUserCountByUname" parameterType="String" resultType="int">
+		select count(*) from user where user_name = #{user_name}
+	</select>
+	
+	<select id="queryUserPhotoCountByAccount" parameterType="String" resultType="int">
+		select count(user_photo) from user where user_account = #{user_account}
+	</select>
+	
+	<select id="queryUserPwdByAccount" parameterType="String" resultType="String">
+		select user_pwd from user where user_account = #{user_account}
+	</select>
+	
+	<select id="querySubPostCount" parameterType="org.ltq.entity.User" resultType="int">
+		select count(*) from user_subspost where user_account = #{user_account} and post_id = #{post_id}
+	</select>
+	
+	<select id="querySubCount" parameterType="org.ltq.entity.User" resultType="int">
+		select count(*) from user_sub where user_account = #{user_account} and sub_account = #{sub_account}
+	</select>
+	
+	<select id="queryUserSubPostIDByAcc" parameterType="String" resultType="java.lang.Integer">
+		select post_id from user_subspost where user_account = #{user_account}
+	</select>
+	
+	<select id="queryUserSubAccByAcc" parameterType="String" resultType="String">
+		select sub_account from user_sub where user_account = #{user_account}
+	</select>
+
+	<!-- resultMap -->
+
+	<resultMap type="org.ltq.entity.User" id="userMapping">
+		<id property="user_id" column="user_id"/>
+		<result property="user_account" column="user_account"/>
+		<result property="user_pwd" column="user_pwd"/>
+		<result property="user_name" column="user_name"/>
+		<result property="user_photo" column="user_photo"/>
+		<result property="post_id" column="post_id"/>
+		<result property="sub_time" column="sub_time" />
+	</resultMap>
+		
+</mapper>

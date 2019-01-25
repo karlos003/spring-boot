@@ -1,0 +1,64 @@
+create database test;
+use test ;
+create table comment (
+commentid BIGINT PRIMARY KEY AUTO_INCREMENT,
+account VARCHAR(20) NOT NULL,
+uname VARCHAR(20) NOT NULL,
+time TIMESTAMP NOT NULL,
+content VARCHAR(400),
+image INT,
+post_id INT
+);
+create table post(
+post_id INT PRIMARY KEY AUTO_INCREMENT,
+post_type VARCHAR(10),
+post_title VARCHAR(100) NOT NULL,
+post_content VARCHAR(500) NOT NULL,
+user_account VARCHAR(20) NOT NULL,
+user_name VARCHAR(20) NOT NULL,
+post_time TIMESTAMP,
+post_image INT,
+post_likeNum INT,
+post_subscribeNum INT,
+post_viewNum INT,
+post_replyNum INT
+);
+create table user(
+user_id INT PRIMARY KEY AUTO_INCREMENT,
+user_account VARCHAR(20) NOT NULL,
+user_pwd VARCHAR(20) NOT NULL,
+user_name VARCHAR(20) NOT NULL,
+user_photo INT
+);
+create table user_sub(
+user_account VARCHAR(20) NOT NULL,
+sub_account VARCHAR(20) NOT NULL,
+sub_time TIMESTAMP
+);
+create table user_subspost(
+user_account VARCHAR(20) NOT NULL,
+post_id INT NOT NULL,
+sub_time TIMESTAMP
+);
+DELIMITER //
+create procedure addPostViewNum(IN pid INT)
+BEGIN
+DECLARE c int;
+DECLARE d int;
+select post_viewNum into c from post where post_id = pid;
+set d = c + 1;
+update post set post_viewNum = d where post_id = pid;
+END
+//
+DELIMITER ;
+DELIMITER //
+create procedure addPostLikeNum(IN pid INT)
+BEGIN
+DECLARE a int;
+DECLARE b int;
+select post_likeNum into a from post where post_id = pid;
+set b = a + 1;
+update post set post_likeNum = b where post_id = pid;
+END
+//
+DELIMITER ;
