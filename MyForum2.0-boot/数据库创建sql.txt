@@ -1,10 +1,10 @@
 create database test;
-use test ;
+use test;
 create table comment (
 commentid BIGINT PRIMARY KEY AUTO_INCREMENT,
 account VARCHAR(20) NOT NULL,
 uname VARCHAR(20) NOT NULL,
-time TIMESTAMP NOT NULL,
+time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 content VARCHAR(400),
 image INT,
 post_id INT
@@ -16,7 +16,7 @@ post_title VARCHAR(100) NOT NULL,
 post_content VARCHAR(500) NOT NULL,
 user_account VARCHAR(20) NOT NULL,
 user_name VARCHAR(20) NOT NULL,
-post_time TIMESTAMP,
+post_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 post_image INT,
 post_likeNum INT,
 post_subscribeNum INT,
@@ -33,12 +33,12 @@ user_photo INT
 create table user_sub(
 user_account VARCHAR(20) NOT NULL,
 sub_account VARCHAR(20) NOT NULL,
-sub_time TIMESTAMP
+sub_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 create table user_subspost(
 user_account VARCHAR(20) NOT NULL,
 post_id INT NOT NULL,
-sub_time TIMESTAMP
+sub_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 DELIMITER //
 create procedure addPostViewNum(IN pid INT)
