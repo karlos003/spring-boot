@@ -11,8 +11,6 @@ import org.springframework.util.CollectionUtils;
 
 /**
  * Redis工具类
- * @author ZENG.XIAO.YAN
- * @date   2018年6月7日
  */
 
 @Component
