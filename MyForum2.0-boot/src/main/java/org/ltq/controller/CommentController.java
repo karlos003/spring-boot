@@ -5,6 +5,7 @@ import org.ltq.entity.Comment;
 import org.ltq.entity.User;
 import org.ltq.service.CommentService;
 import org.ltq.utils.IOUtil;
+import org.ltq.utils.Utils;
 import org.ltq.utils.ValidsUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,9 +28,11 @@ public class CommentController {
     @Resource
     CommentService commentService;
 
-    ValidsUtil validUtil = new ValidsUtil();
+    private ValidsUtil validUtil = new ValidsUtil();
 
-    IOUtil ioUtil = new IOUtil();
+    private IOUtil ioUtil = new IOUtil();
+
+    private Utils util = new Utils();
 
     /**
      * 请求的form表单的enctype="multipart/form-data"，request会自动转换成multipartRequest，所有参数都不为null，且String类型的值不为null和""
@@ -40,15 +43,17 @@ public class CommentController {
      */
     @RequestMapping("/addCommentControl")
     public String addCommentControl(@RequestParam("content") String content, @RequestParam("comPic") MultipartFile comPic, HttpSession session, Map<String, Object> map) {
+        int result1 = util.strNullValid(content);
+        int result2 = util.strNullValid(comPic.getOriginalFilename());
         //判断，图片和文字都没有时返回失败
-        if (content.trim().length() == 0 && comPic.getOriginalFilename().trim().length() == 0) {
+        if ( result1 == -1 &&  result2 == -1) {
             map.put("resultType", 6);
             return "requestResult";
         }
 
         int imgNum = 0;
 
-        if (comPic.getOriginalFilename().trim().length() > 0) {
+        if (result2 == 0) {
 
             int validResult = validUtil.imgValid(comPic);
 
@@ -80,7 +85,7 @@ public class CommentController {
     @RequestMapping("/deleteCommentControl")
     public String deleteCommentControl(@RequestParam("commentid") BigInteger commentId, Map<String, Object> map) {
         commentService.deleteCommentByCommentId(commentId);
-        File file = new File("D:\\MyForumUploadDir\\comment_picture\\" + commentId + ".jpg");
+        File file = new File("D:\\MyForumUploadDir\\c" + commentId + ".jpg");
         file.delete();
         map.put("resultType", 7);
         return "requestResult";
@@ -89,7 +94,7 @@ public class CommentController {
     @RequestMapping("/deleteCommentInPost")
     public String deleteCommentInPost(@RequestParam("post_id") BigInteger post_id, @RequestParam("commentid") BigInteger commentId, Map<String, Object> map) {
         commentService.deleteCommentByCommentId(commentId);
-        File file = new File("D:\\MyForumUploadDir\\comment_picture\\" + commentId + ".jpg");
+        File file = new File("D:\\MyForumUploadDir\\c" + commentId + ".jpg");
         file.delete();
         map.put("post_id", post_id);
         map.put("resultType", 32);
@@ -98,15 +103,17 @@ public class CommentController {
 
     @RequestMapping("/addPostComment")
     public String addPostComment(@RequestParam("post_id") BigInteger post_id, @RequestParam(value = "content") String content, @RequestParam(value = "comPic", required = false) MultipartFile comPic, HttpSession session, Map<String, Object> map) {
+        int result1 = util.strNullValid(content);
+        int result2 = util.strNullValid(comPic.getOriginalFilename());
         //判断，图片和文字都没有时返回失败
-        if (content.trim().length() == 0 && comPic.getOriginalFilename().trim().length() == 0) {
+        if (result1 == -1 && result2 == -1) {
             map.put("post_id", post_id);
             map.put("resultType", 29);
             return "requestResult";
         }
         int imgNum = 0;
 
-        if (comPic.getOriginalFilename().trim().length() > 0) {
+        if (result2 == 0) {
 
             int validResult = validUtil.imgValid(comPic);
 

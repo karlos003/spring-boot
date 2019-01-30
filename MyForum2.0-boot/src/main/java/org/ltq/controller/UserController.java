@@ -5,6 +5,7 @@ import org.ltq.entity.User;
 import org.ltq.service.PostService;
 import org.ltq.service.UserService;
 import org.ltq.utils.IOUtil;
+import org.ltq.utils.Utils;
 import org.ltq.utils.ValidsUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.math.BigInteger;
@@ -36,6 +36,8 @@ public class UserController {
 
     private IOUtil ioUtil = new IOUtil();
 
+    private Utils util = new Utils();
+
     @RequestMapping(value = "signUpControl")
     public String signUpControl(User user, HttpSession session, HttpServletResponse response, Map<String, Object> map) {
         int validResult = validUtil.signUpValid(user);
@@ -50,14 +52,7 @@ public class UserController {
         if (result == 1) {
             //注册成功
             session.setAttribute("user", user);
-            Cookie accountCookie = new Cookie("account", user.getUser_account());
-            Cookie pwdCookie = new Cookie("pwd", user.getUser_pwd());
-            accountCookie.setMaxAge(604800);
-            accountCookie.setPath("/");
-            pwdCookie.setMaxAge(604800);
-            pwdCookie.setPath("/");
-            response.addCookie(accountCookie);
-            response.addCookie(pwdCookie);
+            util.addUserCookies(user,response);
             map.put("resultType", 2);
             return "requestResult";
         } else if (result == -1) {
@@ -73,7 +68,8 @@ public class UserController {
 
     @RequestMapping(value = "loginControl")
     public String loginControl(User user, HttpSession session, HttpServletResponse response, Map<String, Object> map) {
-        if (user.getUser_account().trim().length() == 0 || user.getUser_pwd().trim().length() == 0) {
+        int i = util.strNullValid(user.getUser_account(), user.getUser_pwd());
+        if (i == -1) {
             map.put("resultType", 26);
             return "requestResult";
         }
@@ -81,14 +77,7 @@ public class UserController {
         if (result != null) {
             if (result.getUser_pwd().equals(user.getUser_pwd())) {
                 session.setAttribute("user", result);
-                Cookie accountCookie = new Cookie("account", user.getUser_account());
-                Cookie pwdCookie = new Cookie("pwd", user.getUser_pwd());
-                accountCookie.setMaxAge(604800);
-                accountCookie.setPath("/");
-                pwdCookie.setMaxAge(604800);
-                pwdCookie.setPath("/");
-                response.addCookie(accountCookie);
-                response.addCookie(pwdCookie);
+                util.addUserCookies(result,response);
                 map.put("resultType", 1);
                 return "requestResult";
             }
@@ -109,7 +98,7 @@ public class UserController {
     @RequestMapping("updateUserPhotoControl")
     public String updateUserPhotoControl(@RequestParam(value = "user_photo") MultipartFile img, HttpSession session, Map<String, Object> map) {
         int validResult = validUtil.imgValid(img);
-        //判断图片是否为空
+        //判断图片
         if (validResult == -1) {
             map.put("resultType", 16);
             return "requestResult";
@@ -117,7 +106,6 @@ public class UserController {
             map.put("resultType", 25);
             return "requestResult";
         }
-        //判断图片类型为jpg jpeg png
         if (validResult > 0) {
             //获取当前用户
             User user = (User) session.getAttribute("user");
@@ -139,9 +127,11 @@ public class UserController {
 
     @RequestMapping(value = "changePasswordControl")
     public String changePasswordControl(@RequestParam("pwd") String newPwd, @RequestParam("currentPwd") String currentPwd, HttpSession session, Map<String, Object> map) {
-        if (newPwd.trim().length() == 0 || currentPwd.trim().length() == 0 || newPwd.trim().length() == 0) {
+        int i = util.strNullValid(newPwd, currentPwd);
+        if (i == -1) {
             map.put("resultType", 17);
             return "requestResult";
+
         }
         if (validUtil.pwdValid(newPwd) == false) {
             map.put("resultType", 37);

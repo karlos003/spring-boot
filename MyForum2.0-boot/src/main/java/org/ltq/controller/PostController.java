@@ -7,6 +7,7 @@ import org.ltq.service.CommentService;
 import org.ltq.service.PostService;
 import org.ltq.utils.IOUtil;
 import org.ltq.utils.RedisUtil;
+import org.ltq.utils.Utils;
 import org.ltq.utils.ValidsUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.math.BigInteger;
@@ -37,13 +37,15 @@ public class PostController {
     @Resource
     RedisUtil redisUtil;
 
-    ValidsUtil validUtil = new ValidsUtil();
+    private ValidsUtil validUtil = new ValidsUtil();
 
-    IOUtil ioUtil = new IOUtil();
+    private IOUtil ioUtil = new IOUtil();
+
+    private Utils util = new Utils();
 
 
     @RequestMapping("/addPostControl")
-    public String addPostControl(@RequestParam("post_title") String post_title, @RequestParam("post_content") String post_content, @RequestParam("post_type") String post_type, @RequestParam("post_image") List<MultipartFile> fileList, HttpServletRequest request, HttpSession session, Map<String, Object> map) {
+    public String addPostControl(@RequestParam("post_title") String post_title, @RequestParam("post_content") String post_content, @RequestParam("post_type") String post_type, @RequestParam("post_image") List<MultipartFile> fileList,  HttpSession session, Map<String, Object> map) {
         //判断标题内容是否为空，为空返回失败
         if (post_title.trim().length() == 0) {
             map.put("resultType", 15);
@@ -157,11 +159,11 @@ public class PostController {
     public String deletePost(@RequestParam("post_id") int post_id, @RequestParam("post_image") int post_image, Map<String, Object> map) {
         List<BigInteger> commentidList = postService.deletePostByPID(post_id);
         for (int i = 1; i <= post_image; i++) {
-            File file = new File("D:\\MyForumUploadDir\\post_picture\\" + post_id + "_" + i + ".jpg");
+            File file = new File("D:\\MyForumUploadDir\\p" + post_id + "_" + i + ".jpg");
             file.delete();
         }
         for (BigInteger commentId : commentidList) {
-            File file = new File("D:\\MyForumUploadDir\\comment_picture\\" + commentId + ".jpg");
+            File file = new File("D:\\MyForumUploadDir\\c" + commentId + ".jpg");
             file.delete();
         }
         map.put("resultType", 35);
