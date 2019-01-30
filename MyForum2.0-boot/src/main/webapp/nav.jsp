@@ -36,7 +36,7 @@ User user = (User)session.getAttribute("user");
 				<a href="<%=basePath%>postController/queryPostByPostId?currentPage=1&post_id=${post.post_id}" style="font-size: 23px;color:black;text-decoration:none;" target="_blank">${post.post_title }</a><br/>
 				
 				<p>
-				<a href="<%=basePath %>uprofile/${post.user_account}" target="_blank"><img alt=" " src="/upload/${post.user_account}.jpg" width="30" height="30"></a>
+				<a href="<%=basePath %>uprofile/${post.user_account}" target="_blank"><img alt=" " src="<%=basePath%>u${post.user_account}.jpg" width="30" height="30"></a>
 				<a href="<%=basePath %>uprofile/${post.user_account}" target="_blank">${post.user_name }</a>
 				--${post.post_time }--阅读量：${post.post_viewNum }--点赞：${post.post_likeNum }--收藏：${post.post_subscribeNum }
 				</p>

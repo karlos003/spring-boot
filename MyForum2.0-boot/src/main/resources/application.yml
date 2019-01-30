@@ -14,8 +14,13 @@ mybatis:
 #开发配置
 spring:
   profiles: dev
+  http:
+    multipart:
+      location: D:\MyForumUploadDir\
+  resources:
+    static-locations: classpath:/META-INF/resources/,classpath:/resources/, classpath:/static/, classpath:/public/, file:${spring.http.multipart.location}
   datasource:
-    url: jdbc:mysql://localhost:3306/test2?serverTimezone=GMT%2B8
+    url: jdbc:mysql://localhost:3306/test?serverTimezone=GMT%2B8
     username: root
     password: 9520
     driver-class-name: com.mysql.cj.jdbc.Driver

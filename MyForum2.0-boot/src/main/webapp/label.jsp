@@ -18,7 +18,7 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 					<a href="<%=basePath%>userInfo.jsp" target="_blank"><img src="<%=basePath%>images/default_photo.jpg" width="35" height="35"></a>
 				</c:if>
 				<c:if test="${sessionScope.user.user_photo!=0}">
-					<a href="<%=basePath%>userInfo.jsp" target="_blank"><img src="/upload/${sessionScope.user.user_account}.jpg" width="35" height="35"></a>
+					<a href="<%=basePath%>userInfo.jsp" target="_blank"><img src="<%=basePath%>u${sessionScope.user.user_account}.jpg" width="35" height="35"></a>
 				</c:if>
 				<a href="<%=basePath%>userInfo.jsp" target="_blank"style="color: white;font-style: italic;">${sessionScope.user.user_name}</a>，
 				<a href="<%=basePath%>userController/logOffControl" style="color: white;font-style: italic;">注销</a>

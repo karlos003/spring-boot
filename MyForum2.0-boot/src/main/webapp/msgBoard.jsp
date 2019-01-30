@@ -18,7 +18,7 @@ User user = (User)session.getAttribute("user");
 <script type="text/javascript">
 function valid(){
 	var content = document.getElementById("content").value;
-	if(<%=user%>==null){
+	if(<%=user%> == null){
 		alert("登录后可以留言！");
 		return false;	
 	}else if(content==null||content==""||(content.length>0 && content.trim().length == 0)){
@@ -63,7 +63,7 @@ function valid(){
 			<c:forEach items="${requestScope.comments}" var="comment">
 				<!-- 用户信息 -->
 				<p style="color: blue;">
-					<a href="<%=basePath %>uprofile/${comment.account}" target="_blank"><img alt=" " src="/upload/${comment.account}.jpg" width="30" height="30"></a>
+					<a href="<%=basePath %>uprofile/${comment.account}" target="_blank"><img alt=" " src="<%=basePath%>u${comment.account}.jpg" width="30" height="30"></a>
 					<a href="<%=basePath %>uprofile/${comment.account}" target="_blank">${comment.uname}</a>
 					，${comment.time}
 					<!-- 删除超链接  -->
@@ -78,7 +78,7 @@ function valid(){
 				
 				<c:if test="${comment.image!=0}">
 					<!-- 评论图片 -->
-					<a href="/commentPic/${comment.commentid}.jpg" target="_blank"><img src="/commentPic/${comment.commentid}.jpg" onload="AutoResizeImage(300,400,this);" alt="评论图片"></a>
+					<a href="<%=basePath%>c${comment.commentid}.jpg" target="_blank"><img src="<%=basePath%>c${comment.commentid}.jpg" onload="AutoResizeImage(300,400,this);" alt="评论图片"></a>
 					<br/><br/>
 				</c:if>
 				

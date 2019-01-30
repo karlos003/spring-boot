@@ -29,7 +29,7 @@ User user = (User)session.getAttribute("user");
 			</c:if>
 			
 			<c:if test="${requestScope.usr.user_photo!=0}">
-				<img src="/upload/${requestScope.usr.user_account}.jpg" width="300" height="300">
+				<img src="<%=basePath%>u${requestScope.usr.user_account}.jpg" width="300" height="300">
 			</c:if>
 			
 			<hr>

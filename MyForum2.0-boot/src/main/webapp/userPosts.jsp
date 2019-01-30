@@ -23,7 +23,7 @@ User user = (User)session.getAttribute("user");
 			<c:forEach items="${requestScope.posts }" var="post">
 				<a href="<%=basePath%>postController/queryPostByPostId?currentPage=1&post_id=${post.post_id}" style="font-size: 23px;color:black;text-decoration:none;" target="_blank">${post.post_title }</a><br/>
 				<p>
-				<img alt=" " src="/upload/${post.user_account}.jpg" width="30" height="30">${post.user_name }--${post.post_time }
+				<img alt=" " src="<%=basePath%>u${post.user_account}.jpg" width="30" height="30">${post.user_name }--${post.post_time }
 				--阅读量：${post.post_viewNum }--点赞：${post.post_likeNum }--收藏：${post.post_subscribeNum }--分区：${post.post_type }
 				</p>
 				<hr>

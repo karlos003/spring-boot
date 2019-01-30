@@ -24,7 +24,7 @@
 			</c:if>
 			
 			<c:if test="${sessionScope.user.user_photo!=0}">
-				<img src="/upload/${sessionScope.user.user_account}.jpg" width="300" height="300">
+				<img src="<%=basePath%>u${sessionScope.user.user_account}.jpg" width="300" height="300">
 				<form action="userController/updateUserPhotoControl" method="post" enctype="multipart/form-data">
 					修改头像（图片小于2MB）：&nbsp;&nbsp;&nbsp;&nbsp;<input type="file" name="user_photo" id="user_photo">
 					<input type="submit" value="提交"><br/>

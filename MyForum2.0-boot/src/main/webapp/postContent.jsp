@@ -53,7 +53,7 @@ User user = (User)session.getAttribute("user");
 			
 			
 			<div>
-				<a href="<%=basePath %>uprofile/${requestScope.post.user_account }" target="_blank"><img alt=" " src="/upload/${requestScope.post.user_account}.jpg" width="30" height="30"></a>
+				<a href="<%=basePath %>uprofile/${requestScope.post.user_account }" target="_blank"><img alt=" " src="<%=basePath%>u${requestScope.post.user_account}.jpg" width="30" height="30"></a>
 				<a href="<%=basePath %>uprofile/${requestScope.post.user_account }" target="_blank">${requestScope.post.user_name }</a>
 				--${requestScope.post.post_time }
 				--阅读量：${requestScope.post.post_viewNum }--点赞：${requestScope.post.post_likeNum }--收藏：${requestScope.post.post_subscribeNum }&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -78,8 +78,8 @@ User user = (User)session.getAttribute("user");
 			<p style="font-size: 20px;font-weight: bold;">${requestScope.post.post_content }</p>
 			
 			<c:forEach begin="1" end="${requestScope.post.post_image }" var="i">
-				<a href="/postPic/${requestScope.post.post_id }_${i }.jpg" target="_blank">
-					<img alt="图片..." src="/postPic/${requestScope.post.post_id }_${i }.jpg" onload="AutoResizeImage(900,700,this);" >
+				<a href="<%=basePath%>p${requestScope.post.post_id }_${i }.jpg" target="_blank">
+					<img alt="图片..." src="<%=basePath%>p${requestScope.post.post_id }_${i }.jpg" onload="AutoResizeImage(900,700,this);" >
 				</a>
 				<br/>
 			</c:forEach>
@@ -104,7 +104,7 @@ User user = (User)session.getAttribute("user");
 				<!-- 循环打印所有评论 -->
 				<c:forEach items="${requestScope.comments}" var="comment">
 					<p style="color: blue;">
-						<img alt=" " src="/upload/${comment.account}.jpg" width="30" height="30">
+						<img alt=" " src="<%=basePath%>c${comment.account}.jpg" width="30" height="30">
 						${comment.uname}，${comment.time}
 						
 						<c:if test="${sessionScope.user.user_account == comment.account}">
@@ -118,7 +118,7 @@ User user = (User)session.getAttribute("user");
 					
 					<c:if test="${comment.image!=0}">
 						<!-- 评论图片 -->
-						<a href="/commentPic/${comment.commentid}.jpg" target="_blank"><img src="/commentPic/${comment.commentid}.jpg" onload="AutoResizeImage(300,400,this);" alt="评论图片"></a>
+						<a href="<%=basePath%>c${comment.commentid}.jpg" target="_blank"><img src="<%=basePath%>c${comment.commentid}.jpg" onload="AutoResizeImage(300,400,this);" alt="评论图片"></a>
 						<br/><br/>
 					</c:if>
 					

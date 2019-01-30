@@ -15,7 +15,7 @@
 	<div class="content_1">
 		<div class="content_2">
 			<c:forEach items="${requestScope.subs }" var="sub">
-				<a href="<%=basePath %>uprofile/${sub.user_account}" target="_blank"><img alt=" " src="/upload/${sub.user_account}.jpg" width="80" height="80"></a>
+				<a href="<%=basePath %>uprofile/${sub.user_account}" target="_blank"><img alt=" " src="<%=basePath%>u${sub.user_account}.jpg" width="80" height="80"></a>
 				<a href="<%=basePath %>uprofile/${sub.user_account}" target="_blank">${sub.user_name }</a>
 				<c:if test="${sessionScope.user.user_account == requestScope.user_account}">
 					<a href="<%=basePath %>userController/addOrRmSub/${sessionScope.user.user_account }/${sub.user_account}" style="float: right;margin-top: 65px;">取消关注</a>
