@@ -2,10 +2,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ include file="/label.jsp" %>
-<%
-    User user = (User) session.getAttribute("user");
-%>
+<%@ include file="label.jsp" %>
 <!DOCTYPE html>
 <html>
 <head>
