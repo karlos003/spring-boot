@@ -33,7 +33,7 @@ user_photo INT
 create table user_sub(
 user_account VARCHAR(20) NOT NULL,
 sub_account VARCHAR(20) NOT NULL,
-sub_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+usub_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 create table user_subspost(
 user_account VARCHAR(20) NOT NULL,

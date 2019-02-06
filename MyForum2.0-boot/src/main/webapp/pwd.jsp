@@ -12,8 +12,6 @@ String systemPwd = user.getUser_pwd();
 <head>
 <meta charset="UTF-8">
 <link rel="stylesheet" href="styles/mystyle.css">
-<link rel="stylesheet" href="styles/labelStyle.css">
-<link rel="shortcut icon" href="<%=basePath%>images/icon.png">
 <style type="text/css">
 #form{
 	text-align: center;

@@ -204,10 +204,8 @@ public class UserController {
     @RequestMapping("addOrRmSub/{user_account}/{sub_account}")
     public String addOrRmSub(@PathVariable("user_account") String user_account, @PathVariable("sub_account") String sub_account, Map<String, Object> map) {
         User user = new User();
-        Date usub_time = new Date(System.currentTimeMillis());
         user.setUser_account(user_account);
         user.setSub_account(sub_account);
-        user.setUsub_time(usub_time);
         boolean result = userService.addOrRemoveUserSub(user);
         if (result) {
             map.put("sub_account", sub_account);

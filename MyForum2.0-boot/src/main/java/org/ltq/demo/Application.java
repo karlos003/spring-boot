@@ -1,7 +1,7 @@
 package org.ltq.demo;
 
-import java.util.Properties;
 
+import com.github.pagehelper.PageHelper;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -9,14 +9,15 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-import com.github.pagehelper.PageHelper;
+import java.util.Properties;
+
 /**
  * Application类与Controller类要有共同的父包
  * @author 罗天齐
  *
  */
 @SpringBootApplication
-@EnableTransactionManagement	//开启SpringBoot事务支持
+@EnableTransactionManagement    //开启SpringBoot事务支持
 @ComponentScan("org.ltq")	//扫描org.ltq包下的Component
 @MapperScan("org.ltq.dao")	//扫描Mapper接口
 public class Application {

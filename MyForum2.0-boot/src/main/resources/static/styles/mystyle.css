@@ -1,17 +1,27 @@
 @charset "UTF-8";
 body {
-	background-color: gray;
-	background: url("../images/bg.jpg");
-	background-size:cover; 
+    background-color: gray;
+    background: url("../images/bg.jpg") no-repeat;
+    background-size: cover;
 }
-h1 {}
-p {}
-.content_1{
-	background-color: white; margin:0 auto; width:1300px;
+
+
+.box {
+    background-color: white;
+    width: 1100px;
+    margin: 10px auto;
 }
-.content_2{
-	background-color: white; margin-left: 50px;
+
+.content {
+    margin: 40px;
+    padding: 40px;
 }
+
+#list {
+    margin: 4px;
+    padding: 4px;
+}
+
 #footer {
     height: 40px;
     line-height: 40px;
