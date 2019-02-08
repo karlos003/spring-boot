@@ -24,8 +24,8 @@ String systemPwd = user.getUser_pwd();
 	<div id="form">
 	<!-- 修改密码输入栏 -->
 	<form action="userController/changePasswordControl" onsubmit="return valid()">
-		原密码：<input type="password" name="currentPwd" id="currentPwd" required="required" maxlength="20"><br/>
-		输入新密码：<input type="password" name="pwd" required="required" maxlength="20"><br/>
+		<input type="password" name="currentPwd" id="currentPwd" required="required" maxlength="20" placeholder="原密码"><br/>
+		<input type="password" name="pwd" required="required" maxlength="20" placeholder="新密码"><br/>
 		<input type="submit" value="确定">
 	</form>
 	<a href="userInfo.jsp"><button>返回</button></a>

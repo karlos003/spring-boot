@@ -11,17 +11,16 @@
     <title>${requestScope.title }</title>
     <style type="text/css">
         #postLogo {
-            float: right;
-            margin-top: 20px;
+            margin: 20px 20px;
             color: white;
             font-style: italic;
-            font-size: 30px;
+            font-size: 50px;
         }
     </style>
 </head>
 <body>
 
-<a id="postLogo" onclick="return loginCheck()" href="<%=basePath%>post.jsp">写帖子</a>
+<a id="postLogo" onclick="return loginCheck()" href="<%=basePath%>post.jsp">发帖</a>
 
 <br/><br/>
 

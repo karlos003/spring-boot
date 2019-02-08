@@ -14,7 +14,6 @@
 <br/><br/>
 <div class="box">
     <div class="content">
-        <hr>
         <c:forEach items="${requestScope.posts }" var="post">
             <div id="list">
                 <a href="<%=basePath%>postController/queryPostByPostId?currentPage=1&post_id=${post.post_id}"
