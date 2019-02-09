@@ -47,7 +47,7 @@
         }
         /*菜单栏二级菜单*/
         .sub {
-            z-index: 2; 
+            z-index: 2;
             list-style: none;
             background: antiquewhite;
             display: none;

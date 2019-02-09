@@ -7,16 +7,72 @@
 %>
 <html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <script type="application/x-javascript"> addEventListener("load", function () {
-        setTimeout(hideURLbar, 0);
-    }, false);
+    <script src="webjars/jquery/3.1.1-1/jquery.js"></script>
+    <script>
+        $(function () {
+            //编写jQuery相关代码
+            $("#btn").click(function () {
+                var user_account = $("#i1").val();
+                var user_pwd = $("#i2").val();
+                $.ajax({
+                    type: "POST",
+                    url: "<%=basePath%>userController/login",
+                    dataType: "json",
+                    data: {
+                        user_account: user_account,
+                        user_pwd: user_pwd
+                    },
+                    success: function (data) {
+                        if (data.status == 1) {
+                            $(window).attr("location", "index");
+                        } else if (data.status == -3) {
+                            alert("密码错误");
+                        } else if (data.status == -2) {
+                            alert("用户不存在");
+                        } else {
+                            alert("不能为空！");
+                        }
+                    },
+                    error: function (XMLHttpRequest, textStatus, errorThrown) {
+                        alert(XMLHttpRequest.status);
+                        //                alert(XMLHttpRequest.readyState);
+                        //                alert(textStatus);
+                    }
 
-    function hideURLbar() {
-        window.scrollTo(0, 1);
-    } </script>
+                });
+            });
+
+            $("#btn2").click(function () {
+                var user_account = $("#i3").val();
+                var user_pwd = $("#i4").val();
+                var user_name = $("#i5").val();
+                $.post("<%=basePath%>userController/signUp", {
+                        user_account: user_account,
+                        user_pwd: user_pwd,
+                        user_name: user_name
+                    }, function (data) {
+                        if (data.status == 4) {
+                            alert("账号、密码、用户名不能为空");
+                        }else if(data.status == 23){
+                            alert("账号由6--16位数字、字母组成")
+                        }else if(data.status == 22){
+                            alert("密码由6--20位数字、字母、英文符号组成")
+                        }else if(data.status == 24){
+                            alert("昵称由1--13位字符组成")
+                        }else if(data.status == -1){
+                            alert("账号已存在，请更换")
+                        }else if(data.status == -2){
+                            alert("昵称已存在，请更换")
+                        }else {
+                            alert("注册成功")
+                            $(window).attr("location","index");
+                        }
+                    },
+                    "json");
+            });
+
+        });
+    </script>
     <link rel="stylesheet" href="styles/loginSignUp.css">
     <title>登录/注册到MyForum</title>
 </head>
@@ -35,44 +91,25 @@
 
     <div class="login w3layouts agileits">
         <h2>登 录</h2>
-        <form action="userController/loginControl" onsubmit="return valid()">
-            <input type="text" name="user_account" placeholder="用户名" required="required"
-                   value="${cookie.account.value}">
-            <input type="password" name="user_pwd" placeholder="密码" required="required" value="${cookie.pwd.value}">
-            <div class="send-button w3layouts agileits">
-                <input type="submit" value="登 录">
-            </div>
-        </form>
-
-
-        <div class="social-icons w3layouts agileits">
-            <p>- 其他方式登录 -</p>
-            <ul>
-                <li class="qq"><a href="#">
-                    <span class="icons w3layouts agileits"></span>
-                    <span class="text w3layouts agileits">QQ</span></a></li>
-                <li class="weixin w3ls"><a href="#">
-                    <span class="icons w3layouts"></span>
-                    <span class="text w3layouts agileits">微信</span></a></li>
-                <li class="weibo aits"><a href="#">
-                    <span class="icons agileits"></span>
-                    <span class="text w3layouts agileits">微博</span></a></li>
-                <div class="clear"></div>
-            </ul>
+        <input id="i1" type="text" name="user_account" placeholder="用户名" required="required"
+               value="${cookie.account.value}">
+        <input id="i2" type="password" name="user_pwd" placeholder="密码" required="required" value="${cookie.pwd.value}">
+        <div class="send-button w3layouts agileits">
+            <input id="btn" type="submit" value="登 录">
         </div>
+
         <div class="clear"></div>
     </div>
     <div class="copyrights">Collect from <a href="http://www.cssmoban.com/">企业网站模板</a></div>
     <div class="register w3layouts agileits">
         <h2>注 册</h2>
-        <form action="userController/signUpControl">
-            <input type="text" Name="user_account" placeholder="用户名" required="required" maxlength="16">
-            <input type="password" Name="user_pwd" placeholder="密码" required="required" maxlength="20">
-            <input type="text" Name="user_name" placeholder="昵称" required="required" maxlength="13">
-            <div class="send-button w3layouts agileits">
-                <input type="submit" value="注册">
-            </div>
-        </form>
+
+        <input id="i3" type="text" Name="user_account" placeholder="用户名" required="required" maxlength="16">
+        <input id="i4" type="password" Name="user_pwd" placeholder="密码" required="required" maxlength="20">
+        <input id="i5" type="text" Name="user_name" placeholder="昵称" required="required" maxlength="13">
+        <div class="send-button w3layouts agileits">
+            <input id="btn2" type="submit" value="注册">
+        </div>
 
 
         <div class="clear"></div>

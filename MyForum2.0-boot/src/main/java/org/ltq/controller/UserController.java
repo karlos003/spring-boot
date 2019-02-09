@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
@@ -38,54 +39,48 @@ public class UserController {
 
     private Utils util = new Utils();
 
-    @RequestMapping(value = "signUpControl")
-    public String signUpControl(User user, HttpSession session, HttpServletResponse response, Map<String, Object> map) {
-        int validResult = validUtil.signUpValid(user);
-
-        //注册验证
-        if (validResult != 0) {
-            map.put("resultType", validResult);
-            return "requestResult";
+    @RequestMapping("login")
+    @ResponseBody
+    public String login(@RequestParam("user_account")String user_account,@RequestParam("user_pwd")String user_pwd,HttpSession session,HttpServletResponse response){
+        User user = userService.queryUserByAccount(user_account);
+        System.out.println(user_account+"--"+user_pwd);
+        if(user_account.trim().length() == 0 || user_pwd.trim().length() == 0){
+            return "{\"status\" : -1 }";
         }
-
-        int result = userService.addUser(user);
-        if (result == 1) {
-            //注册成功
-            session.setAttribute("user", user);
-            util.addUserCookies(user,response);
-            map.put("resultType", 2);
-            return "requestResult";
-        } else if (result == -1) {
-            //存在相同账号
-            map.put("resultType", 3);
-            return "requestResult";
-        } else {
-            //存在相同昵称
-            map.put("resultType", 27);
-            return "requestResult";
+        if(user!=null){
+            if(user.getUser_pwd().equals(user_pwd)){
+                session.setAttribute("user", user);
+                util.addUserCookies(user,response);
+                return "{\"status\" : 1 }";
+            }
+            return "{\"status\" : -3 }";
         }
+        return "{\"status\" : -2 }";
     }
 
-    @RequestMapping(value = "loginControl")
-    public String loginControl(User user, HttpSession session, HttpServletResponse response, Map<String, Object> map) {
-        int i = util.strNullValid(user.getUser_account(), user.getUser_pwd());
-        if (i == -1) {
-            map.put("resultType", 26);
-            return "requestResult";
-        }
-        User result = userService.queryUserByAccount(user.getUser_account());
-        if (result != null) {
-            if (result.getUser_pwd().equals(user.getUser_pwd())) {
-                session.setAttribute("user", result);
-                util.addUserCookies(result,response);
-                map.put("resultType", 1);
-                return "requestResult";
+    @RequestMapping("signUp")
+    @ResponseBody
+    public String signUp(@RequestParam("user_account")String user_account,@RequestParam("user_pwd")String user_pwd,@RequestParam("user_name")String user_name,HttpSession session,HttpServletResponse response){
+        User user = new User(user_account,user_pwd,user_name);
+        int validResult = validUtil.signUpValid(user);
+        if (validResult != 0) {
+            return "{\"status\" : "+validResult+"}";
+        }else{
+            int result = userService.addUser(user);
+            if (result == 1) {
+                //注册成功
+                session.setAttribute("user", user);
+                util.addUserCookies(user,response);
+                return "{\"status\" : 1 }";
+            } else if (result == -1) {
+                //存在相同账号
+                return "{\"status\" : -1 }";
+            } else {
+                //存在相同昵称
+                return "{\"status\" : -2 }";
             }
-            map.put("resultType", 10);
-            return "requestResult";
         }
-        map.put("resultType", 10);
-        return "requestResult";
+
     }
 
     @RequestMapping("logOffControl")
@@ -219,5 +214,6 @@ public class UserController {
             return "requestResult";
         }
     }
+
 
 }
